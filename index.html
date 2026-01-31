@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPIs Estratega Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables CSS para colores y estilos */
+        :root {
+            --color-rentabilidad: #00BCD4;
+            --color-conversion: #4CAF50;
+            --color-engagement: #2196F3;
+            --color-fidelizacion: #9C27B0;
+            --color-experience: #E91E63;
+            --color-awareness: #FF9800;
+            --color-brand: #FFC107;
+            --color-visibilidad: #F44336;
+            --bg-dark: #0a1929;
+            --bg-darker: #06121f;
+            --bg-gradient: linear-gradient(135deg, var(--bg-darker) 0%, #1a3a5f 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #b0bec5;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --transition-speed: 0.3s;
+            --border-radius: 12px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-container {
+            display: flex;
+            flex-grow: 1;
+            min-height: calc(100vh - 100px); /* Ajuste para el footer */
+        }
+
+        /* Footer */
+        .main-footer {
+            background: rgba(10, 25, 41, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--color-rentabilidad), var(--color-engagement));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .footer-link i {
+            color: var(--color-rentabilidad);
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(10, 25, 41, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--card-border);
+            position: fixed;
+            height: calc(100vh - 100px); /* Ajuste para el footer */
+            z-index: 100;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--color-rentabilidad), var(--color-engagement));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .nav-categories {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .category-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .category-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .category-name {
+            font-size: 0.95rem;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left var(--transition-speed) ease;
+            min-height: calc(100vh - 100px); /* Ajuste para el footer */
+        }
+
+        /* Header */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .view-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .view-tab.active {
+            background: rgba(33, 150, 243, 0.2);
+            border-color: var(--color-engagement);
+            color: var(--color-engagement);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Dashboard */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid var(--card-border);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-color);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .kpi-card:hover::before {
+            height: 6px;
+        }
+
+        .kpi-card.perimeter-border {
+            position: relative;
+        }
+
+        .kpi-card.perimeter-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: var(--border-radius);
+            padding: 2px;
+            background: linear-gradient(90deg, var(--card-color), transparent, var(--card-color));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .kpi-card.perimeter-border:hover::after {
+            opacity: 1;
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .kpi-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .kpi-category {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+
+        .kpi-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .kpi-formula {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--card-color);
+        }
+
+        .kpi-details-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .kpi-details-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .kpi-details-btn i {
+            margin-left: 5px;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .kpi-details-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Calculadora */
+        .calculator-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .calculator-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 1px solid var(--card-border);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .calculator-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .calculator-title i {
+            margin-right: 10px;
+            color: var(--color-rentabilidad);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--color-rentabilidad);
+            box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
+        }
+
+        .result-container {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: center;
+            border-left: 4px solid var(--color-rentabilidad);
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .health-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .health-good {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .health-warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+
+        /* Consejero estratégico */
+        .advisor-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pillars-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .pillar-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border-top: 4px solid var(--pillar-color);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .pillar-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pillar-title i {
+            margin-right: 10px;
+        }
+
+        .pillar-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-list {
+            list-style-type: none;
+        }
+
+        .recommendation-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .recommendation-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--pillar-color);
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-darker);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--modal-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-section {
+            margin-bottom: 25px;
+        }
+
+        .modal-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--modal-color);
+        }
+
+        .modal-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--modal-color);
+            margin: 15px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .calculators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pillars-overview {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                height: calc(100vh - 100px);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .pillars-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-contact {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Utilidades */
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar con categorías -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>KPIs Estratega Digital</h1>
+                <p>Dashboard de Indicadores Clave</p>
+            </div>
+            
+            <div class="nav-categories">
+                <!-- Las categorías se generarán dinámicamente con JavaScript -->
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="category-item" id="all-categories">
+                    <div class="category-color" style="background: linear-gradient(90deg, #00BCD4, #4CAF50, #2196F3);"></div>
+                    <div class="category-name">Todas las categorías</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="main-content" id="mainContent">
+            <!-- Header con pestañas de vista -->
+            <div class="main-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="view-tabs">
+                    <div class="view-tab active" data-view="dashboard">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </div>
+                    <div class="view-tab" data-view="calculator">
+                        <i class="fas fa-calculator"></i> Calculadora
+                    </div>
+                    <div class="view-tab" data-view="advisor">
+                        <i class="fas fa-lightbulb"></i> Consejero
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenedor de vista activa -->
+            <div id="viewContainer">
+                <!-- Dashboard se cargará por defecto -->
+                <div class="dashboard-container" id="dashboardView">
+                    <!-- Las tarjetas KPI se generarán dinámicamente -->
+                </div>
+                
+                <!-- Calculadora -->
+                <div class="calculator-container hidden" id="calculatorView">
+                    <h2>Calculadora de KPIs en Tiempo Real</h2>
+                    <p class="text-secondary">Introduce los valores para calcular automáticamente los indicadores clave</p>
+                    
+                    <div class="calculators-grid">
+                        <!-- Las calculadoras se generarán dinámicamente -->
+                    </div>
+                </div>
+                
+                <!-- Consejero estratégico -->
+                <div class="advisor-container hidden" id="advisorView">
+                    <h2>Consejero Estratégico de KPIs</h2>
+                    <p class="text-secondary">Overview de los 8 pilares de KPIs y recomendaciones accionables</p>
+                    
+                    <div class="pillars-overview" id="pillarsOverview">
+                        <!-- Los pilares se generarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">Dataflowia</div>
+            
+            <div class="footer-contact">
+                <a href="https://www.dataflowia.com" target="_blank" class="footer-link">
+                    <i class="fas fa-globe"></i>
+                    <span>www.dataflowia.com</span>
+                </a>
+                
+                <a href="mailto:contacto@dataflowia.com" class="footer-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>contacto@dataflowia.com</span>
+                </a>
+            </div>
+            
+            <div class="footer-copyright">
+                © 2026 Todos los derechos reservados | KPIs Estratega Digital
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal para detalles de KPI -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Título del KPI</h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>Descripción</h3>
+                    <p id="modalDescription">Descripción detallada del KPI.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Fórmula</h3>
+                    <div class="kpi-formula" id="modalFormula">Fórmula matemática completa</div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Ejemplo práctico</h3>
+                    <div class="example-box" id="modalExample">Ejemplo con números reales</div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Interpretación de resultados</h3>
+                    <p id="modalInterpretation">Cómo interpretar los resultados de este KPI.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Recomendaciones de uso</h3>
+                    <p id="modalRecommendations">Recomendaciones para utilizar este KPI efectivamente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de categorías de KPIs
+        const categories = [
+            {
+                id: 'rentabilidad',
+                name: 'ÁREA DE IMPACTO (Rentabilidad)',
+                color: '#00BCD4',
+                kpis: [
+                    {
+                        id: 'roi',
+                        name: 'ROI - Retorno de la Inversión',
+                        description: 'Mide la rentabilidad de una inversión comparando la ganancia obtenida con el costo de la inversión.',
+                        formula: '(Ingresos - Inversión) / Inversión × 100',
+                        example: 'Ejemplo: Si inviertes $10,000 y generas $50,000 en ingresos, tu ROI es (50,000 - 10,000) / 10,000 × 100 = 400%',
+                        interpretation: 'Un ROI positivo indica que la inversión es rentable. Cuanto mayor sea el porcentaje, mejor será el retorno.',
+                        recommendations: 'Calcula el ROI antes y después de cada campaña. Compara diferentes canales de marketing para optimizar inversiones.'
+                    },
+                    {
+                        id: 'mro',
+                        name: 'MRO - Marketing Return on Investment',
+                        description: 'Mide específicamente el retorno de las inversiones en marketing.',
+                        formula: '(Ingresos por Marketing - Inversión en Marketing) / Inversión en Marketing × 100',
+                        example: 'Ejemplo: Con una inversión de $5,000 en marketing que genera $25,000 en ventas, el MRO es (25,000 - 5,000) / 5,000 × 100 = 400%',
+                        interpretation: 'Un MRO alto indica que las estrategias de marketing son efectivas y generan buenos retornos.',
+                        recommendations: 'Segmenta el MRO por canal de marketing para identificar los más rentables.'
+                    },
+                    {
+                        id: 'cpa',
+                        name: 'CPA - Coste por Adquisición',
+                        description: 'Costo promedio para adquirir un cliente a través de una campaña específica.',
+                        formula: 'Gasto Total / Número de Conversiones',
+                        example: 'Ejemplo: Si gastas $1,000 en una campaña y obtienes 50 conversiones, tu CPA es $1,000 / 50 = $20 por cliente',
+                        interpretation: 'Un CPA bajo indica eficiencia en la adquisición de clientes. Compara con el CLV para evaluar rentabilidad.',
+                        recommendations: 'Optimiza campañas para reducir el CPA sin sacrificar la calidad de los clientes adquiridos.'
+                    },
+                    {
+                        id: 'cpl',
+                        name: 'CPL - Coste por Lead',
+                        description: 'Costo promedio para generar un lead calificado.',
+                        formula: 'Gasto en Marketing / Número de Leads Generados',
+                        example: 'Ejemplo: Con un gasto de $2,000 en marketing que genera 200 leads, el CPL es $2,000 / 200 = $10 por lead',
+                        interpretation: 'Un CPL bajo indica eficiencia en la generación de leads. Evalúa la calidad de los leads además del costo.',
+                        recommendations: 'Implementa estrategias de lead nurturing para convertir más leads en clientes.'
+                    }
+                ]
+            },
+            {
+                id: 'conversion',
+                name: 'CAPTAR CLIENTES (Conversión)',
+                color: '#4CAF50',
+                kpis: [
+                    {
+                        id: 'tasa-conversion',
+                        name: 'Tasa de Conversión',
+                        description: 'Porcentaje de visitantes que completan una acción deseada (compra, registro, etc.).',
+                        formula: '(Conversiones / Total Visitantes) × 100',
+                        example: 'Ejemplo: Si tienes 50 conversiones de 1,000 visitantes, la tasa de conversión es (50 / 1,000) × 100 = 5%',
+                        interpretation: 'Una tasa alta indica efectividad en convertir visitantes en clientes. Varía según industria y tipo de conversión.',
+                        recommendations: 'Realiza tests A/B en landing pages y llamados a la acción para mejorar la tasa de conversión.'
+                    },
+                    {
+                        id: 'mql',
+                        name: 'MQL - Marketing Qualified Lead',
+                        description: 'Lead que ha demostrado suficiente interés para ser considerado como potencial cliente.',
+                        formula: 'Número de MQLs = Leads que cumplen criterios de calificación',
+                        example: 'Ejemplo: De 500 leads generados, 150 cumplen los criterios establecidos (ej: descargaron ebook, asistieron a webinar)',
+                        interpretation: 'Un ratio alto de MQLs indica buena calidad en la generación de leads. Evalúa la conversión de MQL a SQL.',
+                        recommendations: 'Define claramente los criterios de calificación y alinea marketing y ventas en el proceso.'
+                    },
+                    {
+                        id: 'cac',
+                        name: 'CAC - Customer Acquisition Cost',
+                        description: 'Costo total para adquirir un nuevo cliente, incluyendo marketing y ventas.',
+                        formula: '(Gastos Marketing + Gastos Ventas) / Clientes Nuevos',
+                        example: 'Ejemplo: Con $36,000 en gastos de marketing y ventas, y 1,000 clientes nuevos, el CAC es $36,000 / 1,000 = $36 por cliente',
+                        interpretation: 'Un CAC bajo es ideal, pero debe compararse con el CLV. Un ratio CLV:CAC de 3:1 o más es saludable.',
+                        recommendations: 'Optimiza canales de adquisición y mejora la eficiencia de ventas para reducir el CAC.'
+                    }
+                ]
+            },
+            {
+                id: 'engagement',
+                name: 'CREAR EXPECTACIÓN (Engagement)',
+                color: '#2196F3',
+                kpis: [
+                    {
+                        id: 'tasa-retencion',
+                        name: 'Tasa de Retención',
+                        description: 'Porcentaje de clientes que continúan utilizando un producto o servicio durante un período específico.',
+                        formula: '(Clientes al Final del Período - Clientes Nuevos) / Clientes al Inicio del Período × 100',
+                        example: 'Ejemplo: Si tenías 200 clientes, adquiriste 50 nuevos y al final del mes tienes 220, la tasa es (220 - 50) / 200 × 100 = 85%',
+                        interpretation: 'Una tasa alta indica buena retención de clientes. Es más rentable retener que adquirir nuevos clientes.',
+                        recommendations: 'Implementa programas de fidelización y mejora la experiencia del cliente para aumentar la retención.'
+                    },
+                    {
+                        id: 'churn-rate',
+                        name: 'Churn Rate (Tasa de Abandono)',
+                        description: 'Porcentaje de clientes que dejan de usar un producto o servicio durante un período específico.',
+                        formula: '(Clientes Perdidos / Clientes Iniciales) × 100',
+                        example: 'Ejemplo: Si tenías 200 clientes y 8 cancelaron suscripciones, el churn rate es (8 / 200) × 100 = 4%',
+                        interpretation: 'Un churn rate bajo es crucial para el crecimiento sostenible. Analiza razones de abandono para implementar mejoras.',
+                        recommendations: 'Identifica señales tempranas de abandono y contacta proactivamente a clientes en riesgo.'
+                    },
+                    {
+                        id: 'engagement-redes',
+                        name: 'Engagement en Redes Sociales',
+                        description: 'Mide la interacción y compromiso de la audiencia con el contenido en redes sociales.',
+                        formula: '(Me gusta + Comentarios + Compartidas) / Total de Seguidores × 100',
+                        example: 'Ejemplo: Con 10,000 seguidores y 500 interacciones en una publicación, el engagement rate es (500 / 10,000) × 100 = 5%',
+                        interpretation: 'Un engagement rate alto indica contenido relevante y audiencia comprometida. Varía según plataforma e industria.',
+                        recommendations: 'Crea contenido valioso y relevante, y fomenta la interacción con preguntas y llamados a la acción.'
+                    }
+                ]
+            },
+            {
+                id: 'fidelizacion',
+                name: 'APUNTALAR (Fidelización)',
+                color: '#9C27B0',
+                kpis: [
+                    {
+                        id: 'clv',
+                        name: 'CLV - Customer Lifetime Value',
+                        description: 'Valor total que un cliente generará durante toda su relación con la empresa.',
+                        formula: '(Valor Promedio × Frecuencia) × Años de Relación',
+                        example: 'Ejemplo: Un cliente gasta $500 al año, 12 veces al año, durante 5 años: ($500 × 12) × 5 = $30,000',
+                        interpretation: 'Un CLV alto indica clientes valiosos y relaciones duraderas. Compara con el CAC para evaluar rentabilidad.',
+                        recommendations: 'Implementa estrategias de upselling y cross-selling para aumentar el CLV.'
+                    },
+                    {
+                        id: 'aov',
+                        name: 'AOV - Average Order Value',
+                        description: 'Valor promedio de cada pedido realizado por los clientes.',
+                        formula: 'Ingresos Totales / Número de Pedidos',
+                        example: 'Ejemplo: Con $50,000 en ingresos de 500 pedidos, el AOV es $50,000 / 500 = $100 por pedido',
+                        interpretation: 'Un AOV alto indica que los clientes gastan más por transacción. Puede aumentar mediante upselling.',
+                        recommendations: 'Ofrece productos complementarios y promociones para pedidos mínimos para aumentar el AOV.'
+                    },
+                    {
+                        id: 'nps',
+                        name: 'NPS - Net Promoter Score',
+                        description: 'Mide la lealtad del cliente y la probabilidad de que recomienden la empresa.',
+                        formula: '% Promotores - % Detractores',
+                        example: 'Ejemplo: Si el 70% son promotores y el 10% son detractores, el NPS es 70 - 10 = 60',
+                        interpretation: 'Un NPS positivo (>0) es bueno, >50 es excelente y >70 es líder en el mercado.',
+                        recommendations: 'Encuesta regularmente a clientes y actúa sobre los comentarios para mejorar el NPS.'
+                    }
+                ]
+            }
+        ];
+
+        // Datos para el consejero estratégico
+        const strategicPillars = [
+            {
+                id: 'rentabilidad',
+                name: 'ÁREA DE IMPACTO (Rentabilidad)',
+                color: '#00BCD4',
+                icon: 'fas fa-chart-line',
+                description: 'KPIs que miden la eficiencia financiera y el retorno de las inversiones en marketing.',
+                recommendations: [
+                    'Calcula el ROI de cada campaña individualmente',
+                    'Compara el MRO entre diferentes canales de marketing',
+                    'Optimiza el CPA manteniendo la calidad de las conversiones',
+                    'Establece objetivos de rentabilidad por canal'
+                ],
+                reviewFrequency: 'Semanal',
+                benchmarks: 'ROI promedio: 5:1, CPA varía según industria'
+            },
+            {
+                id: 'conversion',
+                name: 'CAPTAR CLIENTES (Conversión)',
+                color: '#4CAF50',
+                icon: 'fas fa-user-plus',
+                description: 'Indicadores que evalúan la efectividad en convertir prospectos en clientes.',
+                recommendations: [
+                    'Optimiza landing pages para mejorar tasa de conversión',
+                    'Califica leads con criterios claros (MQL vs SQL)',
+                    'Reduce el CAC optimizando canales de adquisición',
+                    'Automatiza seguimiento de leads'
+                ],
+                reviewFrequency: 'Diaria para campañas activas',
+                benchmarks: 'Tasa conversión e-commerce: 2-3%, SaaS: 3-5%'
+            },
+            {
+                id: 'engagement',
+                name: 'CREAR EXPECTACIÓN (Engagement)',
+                color: '#2196F3',
+                icon: 'fas fa-comments',
+                description: 'Métricas que miden la interacción y compromiso con la marca.',
+                recommendations: [
+                    'Crea contenido valioso para aumentar engagement',
+                    'Monitoriza churn rate y actúa proactivamente',
+                    'Personaliza comunicaciones según comportamiento',
+                    'Fomenta comunidad alrededor de la marca'
+                ],
+                reviewFrequency: 'Semanal',
+                benchmarks: 'Churn rate aceptable: <5%, Engagement redes: 1-3%'
+            },
+            {
+                id: 'fidelizacion',
+                name: 'APUNTALAR (Fidelización)',
+                color: '#9C27B0',
+                icon: 'fas fa-heart',
+                description: 'KPIs que evalúan la lealtad y valor a largo plazo de los clientes.',
+                recommendations: [
+                    'Calcula CLV periódicamente para cada segmento',
+                    'Implementa programas de fidelización',
+                    'Monitoriza NPS y actúa sobre feedback',
+                    'Fomenta recompra con estrategias de retención'
+                ],
+                reviewFrequency: 'Mensual',
+                benchmarks: 'CLV:CAC ratio ideal: 3:1, NPS excelente: >50'
+            }
+        ];
+
+        // Datos para calculadoras
+        const calculators = [
+            {
+                id: 'roi',
+                name: 'ROI Calculator',
+                icon: 'fas fa-dollar-sign',
+                formula: '(Ingresos - Inversión) / Inversión × 100',
+                inputs: [
+                    { id: 'ingresos', label: 'Ingresos ($)', placeholder: 'Ej: 50000' },
+                    { id: 'inversion', label: 'Inversión ($)', placeholder: 'Ej: 10000' }
+                ],
+                calculate: (values) => {
+                    const ingresos = parseFloat(values.ingresos) || 0;
+                    const inversion = parseFloat(values.inversion) || 0;
+                    if (inversion === 0) return 0;
+                    return ((ingresos - inversion) / inversion * 100).toFixed(2);
+                },
+                resultUnit: '%',
+                resultLabel: 'Retorno de la Inversión'
+            },
+            {
+                id: 'cpa',
+                name: 'CPA Calculator',
+                icon: 'fas fa-tag',
+                formula: 'Gasto Total / Número de Conversiones',
+                inputs: [
+                    { id: 'gasto', label: 'Gasto Total ($)', placeholder: 'Ej: 1000' },
+                    { id: 'conversiones', label: 'Conversiones', placeholder: 'Ej: 50' }
+                ],
+                calculate: (values) => {
+                    const gasto = parseFloat(values.gasto) || 0;
+                    const conversiones = parseFloat(values.conversiones) || 0;
+                    if (conversiones === 0) return 0;
+                    return (gasto / conversiones).toFixed(2);
+                },
+                resultUnit: '$',
+                resultLabel: 'Costo por Adquisición'
+            },
+            {
+                id: 'clv',
+                name: 'CLV Calculator',
+                icon: 'fas fa-user-clock',
+                formula: '(Valor Promedio × Frecuencia) × Años',
+                inputs: [
+                    { id: 'valor', label: 'Valor Promedio ($)', placeholder: 'Ej: 500' },
+                    { id: 'frecuencia', label: 'Frecuencia por Año', placeholder: 'Ej: 12' },
+                    { id: 'anos', label: 'Años de Relación', placeholder: 'Ej: 5' }
+                ],
+                calculate: (values) => {
+                    const valor = parseFloat(values.valor) || 0;
+                    const frecuencia = parseFloat(values.frecuencia) || 0;
+                    const anos = parseFloat(values.anos) || 0;
+                    return (valor * frecuencia * anos).toFixed(2);
+                },
+                resultUnit: '$',
+                resultLabel: 'Customer Lifetime Value'
+            },
+            {
+                id: 'clv-cac',
+                name: 'CLV:CAC Ratio',
+                icon: 'fas fa-balance-scale',
+                formula: 'CLV / CAC',
+                inputs: [
+                    { id: 'clv', label: 'CLV ($)', placeholder: 'Ej: 30000' },
+                    { id: 'cac', label: 'CAC ($)', placeholder: 'Ej: 100' }
+                ],
+                calculate: (values) => {
+                    const clv = parseFloat(values.clv) || 0;
+                    const cac = parseFloat(values.cac) || 0;
+                    if (cac === 0) return 0;
+                    return (clv / cac).toFixed(2);
+                },
+                resultUnit: ':1 Ratio',
+                resultLabel: 'CLV:CAC Ratio',
+                healthIndicator: true
+            }
+        ];
+
+        // Estado de la aplicación
+        let currentCategory = 'all';
+        let currentView = 'dashboard';
+        let currentModalKPI = null;
+
+        // Inicialización de la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar categorías en sidebar
+            loadCategories();
+            
+            // Cargar KPIs en dashboard
+            loadKPIs();
+            
+            // Cargar calculadoras
+            loadCalculators();
+            
+            // Cargar consejero estratégico
+            loadStrategicAdvisor();
+            
+            // Configurar event listeners
+            setupEventListeners();
+            
+            // Inicializar primera categoría como activa
+            document.querySelector('.category-item').classList.add('active');
+        });
+
+        // Función para cargar categorías en sidebar
+        function loadCategories() {
+            const navCategories = document.querySelector('.nav-categories');
+            
+            categories.forEach(category => {
+                const categoryElement = document.createElement('div');
+                categoryElement.className = 'category-item';
+                categoryElement.dataset.category = category.id;
+                
+                categoryElement.innerHTML = `
+                    <div class="category-color" style="background: ${category.color};"></div>
+                    <div class="category-name">${category.name}</div>
+                `;
+                
+                navCategories.appendChild(categoryElement);
+            });
+        }
+
+        // Función para cargar KPIs en dashboard
+        function loadKPIs() {
+            const dashboardView = document.getElementById('dashboardView');
+            dashboardView.innerHTML = '';
+            
+            let kpisToShow = [];
+            
+            if (currentCategory === 'all') {
+                // Mostrar todos los KPIs de todas las categorías
+                categories.forEach(category => {
+                    kpisToShow.push(...category.kpis.map(kpi => ({
+                        ...kpi,
+                        categoryName: category.name,
+                        categoryColor: category.color
+                    })));
+                });
+            } else {
+                // Mostrar solo KPIs de la categoría seleccionada
+                const category = categories.find(cat => cat.id === currentCategory);
+                if (category) {
+                    kpisToShow = category.kpis.map(kpi => ({
+                        ...kpi,
+                        categoryName: category.name,
+                        categoryColor: category.color
+                    }));
+                }
+            }
+            
+            // Crear tarjetas KPI
+            kpisToShow.forEach(kpi => {
+                const kpiCard = document.createElement('div');
+                kpiCard.className = 'kpi-card perimeter-border fade-in';
+                kpiCard.dataset.kpiId = kpi.id;
+                kpiCard.style.setProperty('--card-color', kpi.categoryColor);
+                
+                kpiCard.innerHTML = `
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-name">${kpi.name}</div>
+                            <div class="kpi-category">${kpi.categoryName}</div>
+                        </div>
+                    </div>
+                    <div class="kpi-description">${kpi.description}</div>
+                    <div class="kpi-formula">${kpi.formula}</div>
+                    <button class="kpi-details-btn">
+                        Ver Detalles <i class="fas fa-arrow-right"></i>
+                    </button>
+                `;
+                
+                dashboardView.appendChild(kpiCard);
+            });
+            
+            // Añadir event listeners a los botones de detalles
+            document.querySelectorAll('.kpi-details-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const kpiCard = this.closest('.kpi-card');
+                    const kpiId = kpiCard.dataset.kpiId;
+                    openKPIModal(kpiId);
+                });
+            });
+            
+            // Añadir event listeners a las tarjetas KPI
+            document.querySelectorAll('.kpi-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const kpiId = this.dataset.kpiId;
+                    openKPIModal(kpiId);
+                });
+            });
+        }
+
+        // Función para cargar calculadoras
+        function loadCalculators() {
+            const calculatorsGrid = document.querySelector('.calculators-grid');
+            calculatorsGrid.innerHTML = '';
+            
+            calculators.forEach(calculator => {
+                const calculatorCard = document.createElement('div');
+                calculatorCard.className = 'calculator-card';
+                calculatorCard.dataset.calculatorId = calculator.id;
+                
+                calculatorCard.innerHTML = `
+                    <div class="calculator-title">
+                        <i class="${calculator.icon}"></i> ${calculator.name}
+                    </div>
+                    <div class="formula-display">${calculator.formula}</div>
+                    <div class="inputs-container">
+                        ${calculator.inputs.map(input => `
+                            <div class="input-group">
+                                <label for="${input.id}-${calculator.id}">${input.label}</label>
+                                <input type="number" 
+                                       id="${input.id}-${calculator.id}" 
+                                       placeholder="${input.placeholder}"
+                                       data-input-id="${input.id}">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="result-container">
+                        <div class="result-label">${calculator.resultLabel}</div>
+                        <div class="result-value" id="result-${calculator.id}">0.00</div>
+                        <div class="result-unit">${calculator.resultUnit}</div>
+                        ${calculator.healthIndicator ? `
+                            <div class="health-indicator health-warning" id="health-${calculator.id}">
+                                Ratio bajo (<3:1) - Requiere atención
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                calculatorsGrid.appendChild(calculatorCard);
+                
+                // Añadir event listeners a los inputs de la calculadora
+                calculator.inputs.forEach(input => {
+                    const inputElement = document.getElementById(`${input.id}-${calculator.id}`);
+                    inputElement.addEventListener('input', () => {
+                        calculateAndUpdate(calculator);
+                    });
+                });
+            });
+        }
+
+        // Función para cargar consejero estratégico
+        function loadStrategicAdvisor() {
+            const pillarsOverview = document.getElementById('pillarsOverview');
+            pillarsOverview.innerHTML = '';
+            
+            strategicPillars.forEach(pillar => {
+                const pillarCard = document.createElement('div');
+                pillarCard.className = 'pillar-card fade-in';
+                pillarCard.style.setProperty('--pillar-color', pillar.color);
+                
+                pillarCard.innerHTML = `
+                    <div class="pillar-title">
+                        <i class="${pillar.icon}" style="color: ${pillar.color};"></i>
+                        ${pillar.name}
+                    </div>
+                    <div class="pillar-description">${pillar.description}</div>
+                    <div class="recommendations">
+                        <h4>Recomendaciones clave:</h4>
+                        <ul class="recommendation-list">
+                            ${pillar.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="pillar-meta">
+                        <div class="meta-item">
+                            <strong>Frecuencia revisión:</strong> ${pillar.reviewFrequency}
+                        </div>
+                        <div class="meta-item">
+                            <strong>Benchmarks:</strong> ${pillar.benchmarks}
+                        </div>
+                    </div>
+                `;
+                
+                pillarsOverview.appendChild(pillarCard);
+            });
+        }
+
+        // Función para calcular y actualizar resultados de calculadora
+        function calculateAndUpdate(calculator) {
+            const values = {};
+            
+            // Obtener valores de inputs
+            calculator.inputs.forEach(input => {
+                const inputElement = document.getElementById(`${input.id}-${calculator.id}`);
+                values[input.id] = inputElement.value;
+            });
+            
+            // Calcular resultado
+            const result = calculator.calculate(values);
+            
+            // Actualizar resultado en UI
+            const resultElement = document.getElementById(`result-${calculator.id}`);
+            resultElement.textContent = result;
+            
+            // Actualizar indicador de salud para CLV:CAC
+            if (calculator.id === 'clv-cac') {
+                const healthElement = document.getElementById(`health-${calculator.id}`);
+                const ratio = parseFloat(result);
+                
+                if (ratio >= 3) {
+                    healthElement.className = 'health-indicator health-good';
+                    healthElement.textContent = 'Ratio óptimo (≥3:1) - Estrategia sostenible';
+                } else {
+                    healthElement.className = 'health-indicator health-warning';
+                    healthElement.textContent = 'Ratio bajo (<3:1) - Requiere atención';
+                }
+            }
+        }
+
+        // Función para abrir modal de detalles de KPI
+        function openKPIModal(kpiId) {
+            // Buscar KPI en todas las categorías
+            let kpiData = null;
+            let categoryColor = '#00BCD4';
+            
+            for (const category of categories) {
+                const foundKPI = category.kpis.find(kpi => kpi.id === kpiId);
+                if (foundKPI) {
+                    kpiData = foundKPI;
+                    categoryColor = category.color;
+                    break;
+                }
+            }
+            
+            if (!kpiData) return;
+            
+            // Actualizar modal con datos del KPI
+            document.getElementById('modalTitle').textContent = kpiData.name;
+            document.getElementById('modalDescription').textContent = kpiData.description;
+            document.getElementById('modalFormula').textContent = kpiData.formula;
+            document.getElementById('modalExample').textContent = kpiData.example;
+            document.getElementById('modalInterpretation').textContent = kpiData.interpretation;
+            document.getElementById('modalRecommendations').textContent = kpiData.recommendations;
+            
+            // Establecer color del modal
+            document.documentElement.style.setProperty('--modal-color', categoryColor);
+            document.querySelector('.modal-title').style.color = categoryColor;
+            
+            // Mostrar modal
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            currentModalKPI = kpiId;
+        }
+
+        // Función para cerrar modal
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentModalKPI = null;
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Categorías en sidebar
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remover clase active de todas las categorías
+                    document.querySelectorAll('.category-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Añadir clase active a la categoría seleccionada
+                    this.classList.add('active');
+                    
+                    // Actualizar categoría actual
+                    if (this.id === 'all-categories') {
+                        currentCategory = 'all';
+                    } else {
+                        currentCategory = this.dataset.category;
+                    }
+                    
+                    // Recargar KPIs
+                    loadKPIs();
+                    
+                    // Cerrar sidebar en móvil
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Pestañas de vista
+            document.querySelectorAll('.view-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover clase active de todas las pestañas
+                    document.querySelectorAll('.view-tab').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Añadir clase active a la pestaña seleccionada
+                    this.classList.add('active');
+                    
+                    // Obtener vista seleccionada
+                    currentView = this.dataset.view;
+                    
+                    // Ocultar todas las vistas
+                    document.getElementById('dashboardView').classList.add('hidden');
+                    document.getElementById('calculatorView').classList.add('hidden');
+                    document.getElementById('advisorView').classList.add('hidden');
+                    
+                    // Mostrar vista seleccionada
+                    document.getElementById(`${currentView}View`).classList.remove('hidden');
+                    
+                    // Cerrar sidebar en móvil
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Botón de menú móvil
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            // Cerrar modal
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('modalOverlay').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('modalOverlay')) {
+                    closeModal();
+                }
+            });
+            
+            // Cerrar modal con tecla Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && currentModalKPI) {
+                    closeModal();
+                }
+            });
+            
+            // Cerrar sidebar al hacer clic fuera en móvil
+            document.addEventListener('click', (e) => {
+                const sidebar = document.getElementById('sidebar');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                
+                if (window.innerWidth <= 768 && 
+                    sidebar.classList.contains('active') && 
+                    !sidebar.contains(e.target) && 
+                    e.target !== mobileMenuBtn && 
+                    !mobileMenuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Manejar redimensionamiento de ventana
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
